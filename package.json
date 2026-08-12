@@ -1,0 +1,49 @@
+{
+  "name": "dash-motors-admin",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1106.0",
+    "@heroui/react": "^3.1.0",
+    "@heroui/styles": "^3.1.0",
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "@supabase/ssr": "^0.5.0",
+    "@supabase/supabase-js": "^2.45.0",
+    "browser-image-compression": "^2.0.2",
+    "heic-convert": "^2.1.0",
+    "html-to-image": "^1.11.13",
+    "html2canvas": "^1.4.1",
+    "jszip": "^3.10.1",
+    "lucide-react": "^1.17.0",
+    "mcp-handler": "^1.1.0",
+    "motion": "^12.40.0",
+    "next": "16.2.9",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "server-only": "^0.0.1",
+    "sharp": "^0.35.3",
+    "smartcrop-sharp": "^2.0.8",
+    "zod": "^3.25.76"
+  },
+  "overrides": {
+    "smartcrop-sharp": {
+      "sharp": "$sharp"
+    }
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.9",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}
