@@ -163,7 +163,7 @@ export function PastaVeiculoClient({ folder, vehicle, media }: Props) {
           <Link
             href="/midias/nova"
             className="inline-flex items-center gap-2 text-[13px] font-semibold px-4 rounded-xl mt-2"
-            style={{ height: "36px", background: "linear-gradient(135deg, #CE9E49 0%, #9c7a24 100%)", color: "#1a1508" }}
+            style={{ height: "36px", background: "linear-gradient(135deg, #E2231A 0%, #9c7a24 100%)", color: "#1a1508" }}
           >
             Gerar mídia
           </Link>

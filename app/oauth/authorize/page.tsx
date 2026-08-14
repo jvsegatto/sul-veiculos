@@ -120,7 +120,7 @@ export default async function AuthorizePage({ searchParams }: Props) {
               type="submit"
               formAction={approveAuthorization}
               className="flex-1 h-10 rounded-xl text-[13px] font-bold transition-opacity hover:opacity-90"
-              style={{ background: "linear-gradient(135deg, #CE9E49 0%, #9c7a24 100%)", boxShadow: "0 2px 12px rgba(212,175,55,0.35)", color: "#1a1508" }}
+              style={{ background: "linear-gradient(135deg, #E2231A 0%, #9c7a24 100%)", boxShadow: "0 2px 12px rgba(212,175,55,0.35)", color: "#1a1508" }}
             >
               Autorizar
             </button>

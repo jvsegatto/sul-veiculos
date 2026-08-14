@@ -40,7 +40,7 @@ export function PostPreview({ vehicle }: Props) {
         className="safe-area flex flex-col justify-end"
         style={{ background: "linear-gradient(to top, rgba(10,10,10,0.97) 0%, rgba(10,10,10,0.8) 35%, rgba(10,10,10,0.2) 65%, transparent 85%)" }}
       >
-        <p className="preview-commercial text-[#CE9E49] text-[10px] font-bold uppercase tracking-[0.16em]">
+        <p className="preview-commercial text-[#E2231A] text-[10px] font-bold uppercase tracking-[0.16em]">
           {[vehicle.brand, vehicle.model].filter(Boolean).join(" · ")}
         </p>
         <h2 className="preview-display text-white text-[32px] leading-[0.95] mt-1">
@@ -63,7 +63,7 @@ export function PostPreview({ vehicle }: Props) {
         )}
 
         {vehicle.price > 0 && (
-          <div className="mt-3 pt-2.5" style={{ borderTop: "2px solid #CE9E49" }}>
+          <div className="mt-3 pt-2.5" style={{ borderTop: "2px solid #E2231A" }}>
             <p className="preview-display text-white text-[30px] leading-none">{formatPrecoSemCentavos(vehicle.price)}</p>
           </div>
         )}

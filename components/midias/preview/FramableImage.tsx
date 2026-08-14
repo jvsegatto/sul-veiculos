@@ -185,10 +185,10 @@ export function FramableImage({ src, alt, position, onPositionChange, className,
             className="absolute inset-1.5 pointer-events-none transition-opacity duration-150"
             style={{ opacity: dragging ? 1 : 0 }}
           >
-            <span className="absolute top-0 left-0 w-2.5 h-2.5" style={{ borderTop: "2px solid #CE9E49", borderLeft: "2px solid #CE9E49" }} />
-            <span className="absolute top-0 right-0 w-2.5 h-2.5" style={{ borderTop: "2px solid #CE9E49", borderRight: "2px solid #CE9E49" }} />
-            <span className="absolute bottom-0 left-0 w-2.5 h-2.5" style={{ borderBottom: "2px solid #CE9E49", borderLeft: "2px solid #CE9E49" }} />
-            <span className="absolute bottom-0 right-0 w-2.5 h-2.5" style={{ borderBottom: "2px solid #CE9E49", borderRight: "2px solid #CE9E49" }} />
+            <span className="absolute top-0 left-0 w-2.5 h-2.5" style={{ borderTop: "2px solid #E2231A", borderLeft: "2px solid #E2231A" }} />
+            <span className="absolute top-0 right-0 w-2.5 h-2.5" style={{ borderTop: "2px solid #E2231A", borderRight: "2px solid #E2231A" }} />
+            <span className="absolute bottom-0 left-0 w-2.5 h-2.5" style={{ borderBottom: "2px solid #E2231A", borderLeft: "2px solid #E2231A" }} />
+            <span className="absolute bottom-0 right-0 w-2.5 h-2.5" style={{ borderBottom: "2px solid #E2231A", borderRight: "2px solid #E2231A" }} />
           </div>
 
           {/* Badge de zoom — pisca durante o gesto (scroll/pinça/drag) e some sozinho */}
@@ -197,7 +197,7 @@ export function FramableImage({ src, alt, position, onPositionChange, className,
             className="absolute top-2 left-2 flex items-center gap-1 rounded-full px-2 py-0.5 pointer-events-none transition-opacity duration-200"
             style={{ backgroundColor: "rgba(10,10,10,0.75)", backdropFilter: "blur(4px)", opacity: showBadge || dragging ? 1 : 0 }}
           >
-            <ZoomIn className="w-2.5 h-2.5" style={{ color: "#CE9E49" }} />
+            <ZoomIn className="w-2.5 h-2.5" style={{ color: "#E2231A" }} />
             <span className="text-[9px] font-bold text-white tabular-nums">{Math.round(pos.zoom * 100)}%</span>
           </div>
         </>

@@ -34,21 +34,21 @@ export const MEDIA_STATUS_CFG = {
 // TROQUE ESSES 4 VALORES (+ o logo em public/, + STORE_HASHTAGS logo abaixo)
 // pra clonar esse painel pra um cliente novo — é o único lugar que precisa
 // mudar. Nada mais no código referencia o nome/cidade/contato da loja direto.
-export const STORE_NAME     = 'Dash Motors'
-export const STORE_CITY     = 'Sua Cidade, UF'
-export const STORE_ADDRESS  = 'Endereço completo da loja'
-export const STORE_WHATSAPP = '(00) 00000-0000'
+export const STORE_NAME     = 'Sul Veículos'
+export const STORE_CITY     = 'Primavera do Leste, MT'
+export const STORE_ADDRESS  = 'R. Blumenau, 28, Primavera I, Primavera do Leste, MT'
+export const STORE_WHATSAPP = '(66) 99212-3356'
 
 // Logo usado no header, tela de login, tela de autorização do conector MCP e
 // nas artes geradas pela Central de Mídias (post/story/carrossel) — arquivo
 // físico fica em public/, referenciado sempre por esse caminho único. Troque
-// o arquivo em public/dash-motors-logo.png (ou aponte pra outro nome aqui).
-export const STORE_LOGO_PATH = '/admin/dash-motors-logo.png'
+// o arquivo em public/ (ou aponte pra outro nome aqui).
+export const STORE_LOGO_PATH = '/admin/sul-veiculos-logo.png'
 
 // Hashtags fixas incluídas em toda legenda gerada pela Central de Mídias —
 // pense em 2 termos genéricos de categoria + o @ da loja + a cidade (ver
 // gerarHashtags em lib/midias/legenda.ts)
-export const STORE_HASHTAGS = ['carrosusados', 'seminovos', 'dashmotors', 'suacidade']
+export const STORE_HASHTAGS = ['carrosusados', 'seminovos', 'sulveiculos', 'primaveradoleste']
 
 // Vendedores — contato adicional incluído no final das legendas geradas,
 // além do WhatsApp principal da loja (STORE_WHATSAPP)

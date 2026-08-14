@@ -83,7 +83,7 @@ export function DraggableLayer({ position, onPositionChange, selected, onSelect,
         <div
           data-capture-hide="true"
           className="absolute pointer-events-none rounded-md"
-          style={{ inset: "-6px", border: "1.5px dashed #CE9E49", boxShadow: "0 0 0 3px rgba(212,175,55,0.12)" }}
+          style={{ inset: "-6px", border: "1.5px dashed #E2231A", boxShadow: "0 0 0 3px rgba(212,175,55,0.12)" }}
         />
       )}
     </div>
