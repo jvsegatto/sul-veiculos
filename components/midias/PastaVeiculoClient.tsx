@@ -12,6 +12,8 @@ import { StoryPreview } from "@/components/midias/preview/StoryPreview"
 import { StoryCollagePreview } from "@/components/midias/preview/StoryCollagePreview"
 import { PostPreview } from "@/components/midias/preview/PostPreview"
 import { CarouselPreview } from "@/components/midias/preview/CarouselPreview"
+import type { PhotoPosition } from "@/components/midias/preview/FramableImage"
+import type { StoryLayers } from "@/lib/midias/storyLayers"
 import { deleteGeneratedMedia } from "@/lib/actions/media"
 import { postToInstagram } from "@/lib/actions/instagram"
 import { createClient } from "@/lib/supabase/client"
@@ -215,6 +217,13 @@ function MediaDetailCard({ media, vehicle, deleting, onDelete, onToast }: {
   const isCollage = media.previewData?.layout === "instagram-story-collage-v1"
   const collagePhotos = isCollage ? (media.previewData?.collagePhotos as string[] | undefined) : undefined
   const coverPhoto = !isCollage ? (media.previewData?.coverPhoto as string | undefined) : undefined
+  // Enquadramento das fotos e (story de 1 foto) posição/texto dos textos
+  // arrastáveis, salvos em handleSave() no NovaMidiaWizard — sem passar isso
+  // pro preview/captura aqui, a mídia salva sempre reabria/baixava no layout
+  // padrão, perdendo o que o admin ajustou na hora de criar.
+  const savedPosition  = !isCollage ? (media.previewData?.position  as PhotoPosition   | undefined) : undefined
+  const savedPositions = isCollage  ? (media.previewData?.positions as PhotoPosition[] | undefined) : undefined
+  const savedLayers    = !isCollage ? (media.previewData?.layers    as StoryLayers     | undefined) : undefined
   const previewVehicle = collagePhotos?.length
     ? { ...vehicle, images: collagePhotos }
     : coverPhoto
@@ -303,7 +312,7 @@ function MediaDetailCard({ media, vehicle, deleting, onDelete, onToast }: {
       let blob: Blob
       if (isCollage) {
         // Collage: Canvas 2D puro — carrega fotos via proxy, sem precisar do DOM
-        blob = await captureCollageManual(previewVehicle)
+        blob = await captureCollageManual(previewVehicle, savedPositions)
       } else {
         setShowPreviewModal(true)
         await new Promise(resolve => setTimeout(resolve, 200))
@@ -342,7 +351,7 @@ function MediaDetailCard({ media, vehicle, deleting, onDelete, onToast }: {
       if (document.fonts) await document.fonts.ready
       let blob: Blob
       if (isCollage) {
-        blob = await captureCollageManual(previewVehicle)
+        blob = await captureCollageManual(previewVehicle, savedPositions)
       } else {
         setShowPreviewModal(true)
         await new Promise(resolve => setTimeout(resolve, 200))
@@ -441,8 +450,8 @@ function MediaDetailCard({ media, vehicle, deleting, onDelete, onToast }: {
                 Largura explícita é necessária pro width:100% do .media-preview resolver
                 (dentro de flex justify-center, um item sem largura própria colapsa pra 0). */}
             <div ref={captureModalRef} className={`shrink-0 w-full ${media.mediaType === "story" ? "sm:w-[360px]" : "sm:w-[405px]"}`}>
-              {media.mediaType === "story" && isCollage && <StoryCollagePreview vehicle={previewVehicle} />}
-              {media.mediaType === "story" && !isCollage && <StoryPreview vehicle={previewVehicle} />}
+              {media.mediaType === "story" && isCollage && <StoryCollagePreview vehicle={previewVehicle} positions={savedPositions} />}
+              {media.mediaType === "story" && !isCollage && <StoryPreview vehicle={previewVehicle} position={savedPosition} layers={savedLayers} />}
               {media.mediaType === "post" && <PostPreview vehicle={vehicle} />}
               {media.mediaType === "carousel" && <CarouselPreview vehicle={vehicle} />}
             </div>

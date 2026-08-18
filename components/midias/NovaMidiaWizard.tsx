@@ -13,6 +13,8 @@ import { SelecionarFotosCollage } from "@/components/midias/steps/SelecionarFoto
 import { SelecionarFotoCapa } from "@/components/midias/steps/SelecionarFotoCapa"
 import { Legenda } from "@/components/midias/steps/Legenda"
 import { PreviewFinal } from "@/components/midias/steps/PreviewFinal"
+import type { PhotoPosition } from "@/components/midias/preview/FramableImage"
+import type { StoryLayers } from "@/lib/midias/storyLayers"
 import { getDimensionsForType } from "@/lib/midias/dimensoes"
 import { gerarLegenda, gerarHashtags, formatPrecoSemCentavos } from "@/lib/midias/legenda"
 import { createGeneratedMedia } from "@/lib/actions/media"
@@ -172,7 +174,10 @@ export function NovaMidiaWizard({ vehicles }: Props) {
     setUpdatingNewBadge(false)
   }
 
-  async function handleSave(fmt: FormatoKey) {
+  async function handleSave(
+    fmt: FormatoKey,
+    edits?: { position?: PhotoPosition; positions?: PhotoPosition[]; layers?: StoryLayers }
+  ) {
     if (!vehicle) return
     const mt        = mediaTypeFromFormato(fmt)
     const isCollage = fmt === "story-collage"
@@ -203,6 +208,12 @@ export function NovaMidiaWizard({ vehicles }: Props) {
         layout: isCollage ? "instagram-story-collage-v1" : `instagram-${mt}-v1`,
         ...(isCollage ? { collagePhotos: photos } : {}),
         ...(fmt === "story" ? { coverPhoto: storyCoverPhoto } : {}),
+        // Enquadramento das fotos e (pro story de 1 foto) posição/texto dos
+        // textos arrastáveis — sem isso, reabrir a mídia salva pra ver/baixar
+        // sempre voltava pro layout padrão, perdendo o que o admin ajustou.
+        ...(edits?.position  ? { position: edits.position }   : {}),
+        ...(edits?.positions ? { positions: edits.positions } : {}),
+        ...(edits?.layers    ? { layers: edits.layers }       : {}),
       },
       caption:  mt === "story" ? "" : caption,
       hashtags: mt === "story" ? [] : hashtags,
@@ -600,7 +611,7 @@ export function NovaMidiaWizard({ vehicles }: Props) {
                 hashtags={mediaTypeFromFormato(fmt) === "story" ? [] : hashtags}
                 onChangeCaption={setCaption}
                 onBack={() => setStep(getBackFromPreview())}
-                onSave={() => handleSave(fmt)}
+                onSave={(edits) => handleSave(fmt, edits)}
                 onDone={() => router.push("/midias")}
                 onToggleNewBadge={handleToggleNewBadge}
                 updatingNewBadge={updatingNewBadge}

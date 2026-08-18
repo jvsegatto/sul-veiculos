@@ -42,7 +42,7 @@ type Props = {
   hashtags: string[]
   onChangeCaption: (caption: string) => void
   onBack: () => void
-  onSave: () => void
+  onSave: (edits: { position?: PhotoPosition; positions?: PhotoPosition[]; layers?: StoryLayers }) => void
   onDone: () => void
   onToggleNewBadge: (value: boolean) => void
   updatingNewBadge: boolean
@@ -440,7 +440,18 @@ export function PreviewFinal({
               <Button type="button" variant="outline" size="sm" onPress={onBack} className="font-semibold" isDisabled={saving}>
                 Voltar
               </Button>
-              <Button type="button" variant="primary" size="sm" onPress={onSave} className="font-semibold" isPending={saving}>
+              <Button
+                type="button"
+                variant="primary"
+                size="sm"
+                className="font-semibold"
+                isPending={saving}
+                onPress={() => onSave({
+                  position:  !storyCollage ? framingPositions[0] : undefined,
+                  positions: storyCollage  ? framingPositions    : undefined,
+                  layers:    !storyCollage ? storyLayers         : undefined,
+                })}
+              >
                 Salvar mídia
               </Button>
             </>
