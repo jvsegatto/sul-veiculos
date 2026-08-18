@@ -19,10 +19,15 @@ const PLACEHOLDER_IMAGE =
 // ficar monocromática num dos dois.
 import { ACCENT, BLUE } from "@/lib/theme"
 
+// Foto 1 e 3 são externas (fachada/pátio) — y:80 em vez de 50 (centro) já
+// começa com o carro na metade de baixo do quadro, mesma regra do recorte
+// dos cards do estoque (ver cropThumb em lib/uploads/r2.ts). Foto 2 é
+// sempre o interior (painel/bancos), sem esse viés — não é foto de fachada,
+// a mesma regra não faz sentido aí. O admin ainda ajusta a partir disso.
 export const DEFAULT_COLLAGE_POSITIONS: PhotoPosition[] = [
+  { x: 50, y: 80, zoom: 1 },
   { x: 50, y: 50, zoom: 1 },
-  { x: 50, y: 50, zoom: 1 },
-  { x: 50, y: 50, zoom: 1 },
+  { x: 50, y: 80, zoom: 1 },
 ]
 
 // Seções do quadro 9:16, de cima pra baixo — 3 fotos, sem tarja/rodapé

@@ -8,7 +8,11 @@ export type PhotoPosition = { x: number; y: number; zoom: number }
 export const MIN_ZOOM = 1
 export const MAX_ZOOM = 3
 
-export const DEFAULT_PHOTO_POSITION: PhotoPosition = { x: 50, y: 50, zoom: 1 }
+// y:80 em vez de 50 (centro) — ponto de partida automático com o carro na
+// metade de baixo do quadro, mesma regra usada no recorte dos cards do
+// estoque (ver cropThumb em lib/uploads/r2.ts). O admin ainda pode arrastar/
+// dar zoom a partir daí; isso só evita começar sempre do zero centralizado.
+export const DEFAULT_PHOTO_POSITION: PhotoPosition = { x: 50, y: 80, zoom: 1 }
 
 function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n))

@@ -11,7 +11,11 @@ const PLACEHOLDER =
 import { ACCENT, BLUE } from "@/lib/theme"
 import { STORE_LOGO_PATH } from "@/lib/constants"
 
-const DEFAULT_FRAMING: PhotoPosition = { x: 50, y: 50, zoom: 1 }
+// Mesmo viés das constantes em StoryCollagePreview.tsx/FramableImage.tsx —
+// bandas 1/3 são externas (y:80, carro embaixo), banda 2 é sempre o
+// interior (fica centralizada, sem viés).
+const DEFAULT_FRAMING_EXTERNA: PhotoPosition = { x: 50, y: 80, zoom: 1 }
+const DEFAULT_FRAMING_INTERIOR: PhotoPosition = { x: 50, y: 50, zoom: 1 }
 
 /**
  * Renderiza o story-collage de 3 fotos direto no Canvas 2D — sem html2canvas.
@@ -24,13 +28,14 @@ const DEFAULT_FRAMING: PhotoPosition = { x: 50, y: 50, zoom: 1 }
  * no rodapé). Sem tarja/rodapé sólidos separados.
  *
  * `positions` reflete o enquadramento (foco + zoom) ajustado à mão pelo
- * administrador na prévia — omitido, cada banda usa o centro da foto sem zoom.
+ * administrador na prévia — omitido, cada banda cai no padrão automático
+ * (externas com o carro embaixo, interior centralizada, ver constantes acima).
  */
 export async function captureCollage(vehicle: Vehicle, positions?: PhotoPosition[]): Promise<Blob> {
   const framing = [
-    positions?.[0] ?? DEFAULT_FRAMING,
-    positions?.[1] ?? DEFAULT_FRAMING,
-    positions?.[2] ?? DEFAULT_FRAMING,
+    positions?.[0] ?? DEFAULT_FRAMING_EXTERNA,
+    positions?.[1] ?? DEFAULT_FRAMING_INTERIOR,
+    positions?.[2] ?? DEFAULT_FRAMING_EXTERNA,
   ]
   await document.fonts.ready
 
