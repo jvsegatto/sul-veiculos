@@ -158,7 +158,7 @@ export function PhotoManager({ images, thumbnails, onChange, uploadFile }: Props
           onClick={openPicker}
           disabled={uploading}
           className="h-9 px-4 rounded-[10px] flex items-center gap-1.5 text-[12px] font-bold transition-colors shrink-0"
-          style={{ backgroundColor: "rgba(212,175,55,0.15)", color: ACCENT, border: `1px solid rgba(212,175,55,0.3)` }}
+          style={{ backgroundColor: "rgba(29,63,214,0.15)", color: ACCENT, border: `1px solid rgba(29,63,214,0.3)` }}
         >
           {uploading
             ? <Loader2 className="w-3.5 h-3.5 animate-spin" />

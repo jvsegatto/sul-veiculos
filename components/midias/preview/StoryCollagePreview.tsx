@@ -13,7 +13,11 @@ export { MIN_ZOOM, MAX_ZOOM } from "@/components/midias/preview/FramableImage"
 const PLACEHOLDER_IMAGE =
   "https://images.unsplash.com/photo-1503736334956-4c8f8e4733e7?w=800&q=80&auto=format&fit=crop"
 
-import { GOLD } from "@/lib/theme"
+// Paleta mesclada de propósito (não um só tom): vermelho no selo "Novo" e no
+// preço (destaque/CTA, ver identidade/design-guide.md), azul no nome
+// completo/divisores — mesma mistura vermelho+azul do site, evita a peça
+// ficar monocromática num dos dois.
+import { ACCENT, BLUE } from "@/lib/theme"
 
 export const DEFAULT_COLLAGE_POSITIONS: PhotoPosition[] = [
   { x: 50, y: 50, zoom: 1 },
@@ -45,12 +49,13 @@ type Props = {
 // em filhos de flex-1 corretamente no iOS, causando fotos pretas no download.
 // Com position:absolute + top/height percentuais o html2canvas resolve tudo via
 // getBoundingClientRect do .media-preview (que tem height explícita via aspect-ratio).
-function Band({ src, alt, top, height, borderBottom, children, position, onPositionChange }: {
+function Band({ src, alt, top, height, borderColor, children, position, onPositionChange }: {
   src: string
   alt: string
   top: string | number
   height: string | number
-  borderBottom?: boolean
+  /** Cor do divisor — cada banda usa uma (vermelho/azul mesclados), ver render abaixo. */
+  borderColor?: string
   children?: ReactNode
   position?: PhotoPosition
   onPositionChange?: (position: PhotoPosition) => void
@@ -66,7 +71,7 @@ function Band({ src, alt, top, height, borderBottom, children, position, onPosit
         top: typeof top === "number" ? `${top}%` : top,
         left: 0, right: 0,
         height: typeof height === "number" ? `${height}%` : height,
-        ...(borderBottom ? { borderBottom: `2px solid ${GOLD}` } : {}),
+        ...(borderColor ? { borderBottom: `2px solid ${borderColor}` } : {}),
       }}
     >
       {children}
@@ -87,19 +92,20 @@ export function StoryCollagePreview({ vehicle, positions = DEFAULT_COLLAGE_POSIT
     .filter(Boolean) as string[]
   const precoStr = vehicle.price > 0 ? formatPrecoSemCentavos(vehicle.price) : ""
 
-  // Nome do modelo em branco + resto (versão/motorização) em dourado, na mesma
-  // linha — ex: "Jetta" (branco) + " GLI 2.0 TSI" (dourado).
+  // Nome sempre exatamente como cadastrado no painel (campo "Nome completo"),
+  // sem cortar nem reescrever — só a última palavra muda de cor (branco no
+  // resto, azul na última), ex: "Gol MSI 1.6 Automático!" (branco) + "Automático!" (azul).
   const name = vehicle.name || `${vehicle.brand} ${vehicle.model}`.trim()
-  const modelPrefixMatches = vehicle.model && name.toLowerCase().startsWith(vehicle.model.toLowerCase())
-  const namePart1 = modelPrefixMatches ? name.slice(0, vehicle.model.length) : name
-  const namePart2 = modelPrefixMatches ? name.slice(vehicle.model.length).trim() : ""
+  const nameWords = name.split(" ").filter(Boolean)
+  const namePart2 = nameWords.length > 1 ? nameWords[nameWords.length - 1] : ""
+  const namePart1 = nameWords.length > 1 ? nameWords.slice(0, -1).join(" ") : name
 
   return (
     <div className="media-preview story">
 
       {/* Banda 1 — externa, marca + nome do carro */}
       <Band
-        src={fotoExterna1} alt={vehicle.name} top={BAND1_TOP} height={BAND1_H} borderBottom
+        src={fotoExterna1} alt={vehicle.name} top={BAND1_TOP} height={BAND1_H} borderColor={ACCENT}
         position={positions[0]}
         onPositionChange={onPositionChange ? (p) => onPositionChange(0, p) : undefined}
       >
@@ -112,7 +118,7 @@ export function StoryCollagePreview({ vehicle, positions = DEFAULT_COLLAGE_POSIT
           </p>
           <h2 className="preview-display text-[15px] font-bold leading-[1.1] mt-0.5">
             <span className="text-white">{namePart1}</span>
-            {namePart2 && <span style={{ color: GOLD }}> {namePart2}</span>}
+            {namePart2 && <span style={{ color: BLUE }}> {namePart2}</span>}
           </h2>
         </div>
       </Band>
@@ -125,7 +131,7 @@ export function StoryCollagePreview({ vehicle, positions = DEFAULT_COLLAGE_POSIT
         >
           <span
             className="preview-display inline-block text-[9px] font-bold uppercase tracking-[0.12em]"
-            style={{ backgroundColor: GOLD, color: "#1a1206", borderRadius: "0 3px 3px 0", padding: "5px 12px", boxShadow: "0 2px 10px rgba(0,0,0,0.5)" }}
+            style={{ backgroundColor: ACCENT, color: "#ffffff", borderRadius: "0 3px 3px 0", padding: "5px 12px", boxShadow: "0 2px 10px rgba(0,0,0,0.5)" }}
           >
             Novo
           </span>
@@ -134,7 +140,7 @@ export function StoryCollagePreview({ vehicle, positions = DEFAULT_COLLAGE_POSIT
 
       {/* Banda 2 — interior, sempre no meio, com specs sobrepostos (translúcido) embaixo */}
       <Band
-        src={fotoInterior} alt={`${vehicle.name} - interior`} top={BAND2_TOP} height={BAND2_H} borderBottom
+        src={fotoInterior} alt={`${vehicle.name} - interior`} top={BAND2_TOP} height={BAND2_H} borderColor={BLUE}
         position={positions[1]}
         onPositionChange={onPositionChange ? (p) => onPositionChange(1, p) : undefined}
       >
@@ -143,7 +149,7 @@ export function StoryCollagePreview({ vehicle, positions = DEFAULT_COLLAGE_POSIT
           style={{ padding: "2.5% 5% 2%", background: "linear-gradient(to top, rgba(10,10,10,0.92) 0%, rgba(10,10,10,0.55) 55%, transparent 100%)" }}
         >
           {precoStr && (
-            <p className="preview-display text-[16px] font-bold leading-tight" style={{ color: GOLD }}>
+            <p className="preview-display text-[16px] font-bold leading-tight" style={{ color: ACCENT }}>
               {precoStr}
             </p>
           )}
@@ -151,7 +157,7 @@ export function StoryCollagePreview({ vehicle, positions = DEFAULT_COLLAGE_POSIT
             <div className="preview-commercial flex items-center flex-wrap justify-center gap-x-1.5 gap-y-0.5 mt-1">
               {outrosSpecs.map((s, i) => (
                 <span key={s} className="flex items-center gap-1.5">
-                  {i > 0 && <span className="text-[7px]" style={{ color: GOLD }}>|</span>}
+                  {i > 0 && <span className="text-[7px]" style={{ color: BLUE }}>|</span>}
                   <span className="text-white text-[8px] font-semibold whitespace-nowrap">{s}</span>
                 </span>
               ))}

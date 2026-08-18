@@ -118,7 +118,7 @@ export function EstoqueClient({ vehicles: initialVehicles }: Props) {
         <Link
           href="/estoque/novo"
           className="inline-flex items-center gap-2 text-[13px] font-semibold px-4 rounded-xl shrink-0 transition-opacity hover:opacity-90"
-          style={{ height: "36px", background: "linear-gradient(135deg, #E2231A 0%, #9c7a24 100%)", color: "#1a1508", boxShadow: "0 2px 12px rgba(212,175,55,0.35)" }}
+          style={{ height: "36px", background: "#1d3fd6", color: "#ffffff", boxShadow: "0 2px 12px rgba(29,63,214,0.35)" }}
         >
           <Plus className="w-4 h-4" />
           Novo carro
@@ -282,7 +282,7 @@ function EmptyState({ search, filter, hasExtraFilters }: { search: string; filte
       <Link
         href="/estoque/novo"
         className="inline-flex items-center gap-2 text-[13px] font-semibold px-4 rounded-xl transition-opacity hover:opacity-90"
-        style={{ height: "36px", background: "linear-gradient(135deg, #E2231A 0%, #9c7a24 100%)", color: "#1a1508" }}
+        style={{ height: "36px", background: "#1d3fd6", color: "#ffffff" }}
       >
         <Plus className="w-3.5 h-3.5" />
         Cadastrar veículo

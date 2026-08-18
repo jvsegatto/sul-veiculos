@@ -291,7 +291,7 @@ export function VehicleDetailClient({ vehicle: initialVehicle, canSeeSensitive }
                 <div className="flex items-center gap-2 flex-wrap">
                   <p className="text-[10px] font-black tracking-widest uppercase" style={{ color: MUTED }}>{vehicle.brand}</p>
                   {vehicle.category && (
-                    <span className="text-[9px] font-bold px-2 py-0.5 rounded" style={{ backgroundColor: "rgba(212,175,55,0.15)", color: ACCENT }}>
+                    <span className="text-[9px] font-bold px-2 py-0.5 rounded" style={{ backgroundColor: "rgba(29,63,214,0.15)", color: ACCENT }}>
                       {vehicle.category}
                     </span>
                   )}
@@ -331,7 +331,7 @@ export function VehicleDetailClient({ vehicle: initialVehicle, canSeeSensitive }
                       <span
                         key={opt}
                         className="text-[10px] font-medium px-2.5 py-1 rounded-full"
-                        style={{ backgroundColor: "rgba(212,175,55,0.1)", color: ACCENT, border: "1px solid rgba(212,175,55,0.2)" }}
+                        style={{ backgroundColor: "rgba(29,63,214,0.1)", color: ACCENT, border: "1px solid rgba(29,63,214,0.2)" }}
                       >
                         {opt}
                       </span>

@@ -84,7 +84,7 @@ export function SelecionarVeiculo({
                   style={{
                     border: `2px solid ${active ? ACCENT : BORDER}`,
                     backgroundColor: SURF2,
-                    boxShadow: active ? "0 0 0 3px rgba(212,175,55,0.2)" : "none",
+                    boxShadow: active ? "0 0 0 3px rgba(29,63,214,0.2)" : "none",
                   }}
                 >
                   {/* Checkmark do modo multi */}

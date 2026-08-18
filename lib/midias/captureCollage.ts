@@ -6,7 +6,9 @@ import type { Vehicle } from "@/lib/types"
 const PLACEHOLDER =
   "https://images.unsplash.com/photo-1503736334956-4c8f8e4733e7?w=800&q=80&auto=format&fit=crop"
 
-import { GOLD } from "@/lib/theme"
+// Paleta mesclada de propósito — espelha StoryCollagePreview.tsx (vermelho no
+// selo/preço, azul no nome/divisores), nunca um só tom pra peça inteira.
+import { ACCENT, BLUE } from "@/lib/theme"
 import { STORE_LOGO_PATH } from "@/lib/constants"
 
 const DEFAULT_FRAMING: PhotoPosition = { x: 50, y: 50, zoom: 1 }
@@ -158,16 +160,18 @@ export async function captureCollage(vehicle: Vehicle, positions?: PhotoPosition
     .filter(Boolean) as string[]
   const precoStr = vehicle.price > 0 ? formatPrecoSemCentavos(vehicle.price) : ""
 
+  // Nome sempre exatamente como cadastrado no painel, sem cortar — só a
+  // última palavra muda de cor (mesma regra de StoryCollagePreview.tsx).
   const name = vehicle.name || `${vehicle.brand} ${vehicle.model}`.trim()
-  const modelPrefixMatches = vehicle.model && name.toLowerCase().startsWith(vehicle.model.toLowerCase())
-  const namePart1 = modelPrefixMatches ? name.slice(0, vehicle.model.length) : name
-  const namePart2 = modelPrefixMatches ? name.slice(vehicle.model.length).trim() : ""
+  const nameWords = name.split(" ").filter(Boolean)
+  const namePart2 = nameWords.length > 1 ? nameWords[nameWords.length - 1] : ""
+  const namePart1 = nameWords.length > 1 ? nameWords.slice(0, -1).join(" ") : name
 
-  const F_TITLE  = `bold ${SC * 15}px 'Cinzel', 'Times New Roman', serif`
+  const F_TITLE  = `bold ${SC * 15}px 'Oswald', 'Arial Narrow', sans-serif`
   const F_BRAND  = `400 ${SC * 10}px 'Inter', sans-serif`
-  const F_BADGE  = `700 ${SC * 9}px 'Cinzel', 'Times New Roman', serif`
+  const F_BADGE  = `700 ${SC * 9}px 'Oswald', 'Arial Narrow', sans-serif`
   const F_SPECS  = `600 ${SC * 8}px 'Inter', sans-serif`
-  const F_PRICE  = `bold ${SC * 16}px 'Cinzel', 'Times New Roman', serif`
+  const F_PRICE  = `bold ${SC * 16}px 'Oswald', 'Arial Narrow', sans-serif`
 
   ctx.textBaseline = "bottom"
 
@@ -176,7 +180,7 @@ export async function captureCollage(vehicle: Vehicle, positions?: PhotoPosition
   drawCover(ctx, img1, 0, BAND1_TOP, W, BAND1_H, framing[0].x, framing[0].y, framing[0].zoom)
   const gradH1 = Math.round(BAND1_H * 0.34)
   drawGrad(ctx, BAND1_TOP + BAND1_H - gradH1, gradH1, W)
-  ctx.fillStyle = GOLD
+  ctx.fillStyle = ACCENT
   ctx.fillRect(0, BAND1_TOP + BAND1_H - LINE, W, LINE)
 
   const titleY = BAND1_TOP + BAND1_H - Math.round(W * 0.02) - SC * 4
@@ -184,7 +188,7 @@ export async function captureCollage(vehicle: Vehicle, positions?: PhotoPosition
   const titleParts: { text: string; font: string; color: string }[] = [
     { text: namePart1, font: F_TITLE, color: "#ffffff" },
   ]
-  if (namePart2) titleParts.push({ text: " " + namePart2, font: F_TITLE, color: GOLD })
+  if (namePart2) titleParts.push({ text: " " + namePart2, font: F_TITLE, color: BLUE })
   drawMixedLine(ctx, titleParts, W / 2, titleY)
 
   ctx.textAlign = "center"
@@ -202,12 +206,12 @@ export async function captureCollage(vehicle: Vehicle, positions?: PhotoPosition
     const bh = SC * 22
     const bx = 0
     const by = Math.round(H * 0.04)
-    ctx.fillStyle = GOLD
+    ctx.fillStyle = ACCENT
     ctx.beginPath()
     if (ctx.roundRect) ctx.roundRect(bx, by, bw, bh, [0, SC * 3, SC * 3, 0])
     else ctx.rect(bx, by, bw, bh)
     ctx.fill()
-    ctx.fillStyle = "#1a1206"
+    ctx.fillStyle = "#ffffff"
     ctx.textAlign = "center"
     ctx.fillText(label, bx + bw / 2, by + bh - SC * 6)
     ctx.textAlign = "left"
@@ -216,7 +220,7 @@ export async function captureCollage(vehicle: Vehicle, positions?: PhotoPosition
   // ── Banda 2: foto interior (sempre no meio) — specs translúcidos embaixo ────
   const img2 = await loadImg(urlInterior)
   drawCover(ctx, img2, 0, BAND2_TOP, W, BAND2_H, framing[1].x, framing[1].y, framing[1].zoom)
-  ctx.fillStyle = GOLD
+  ctx.fillStyle = BLUE
   ctx.fillRect(0, BAND2_TOP + BAND2_H - LINE, W, LINE)
 
   if (outrosSpecs.length > 0 || precoStr) {
@@ -233,14 +237,14 @@ export async function captureCollage(vehicle: Vehicle, positions?: PhotoPosition
 
     if (precoStr) {
       ctx.font = F_PRICE
-      ctx.fillStyle = GOLD
+      ctx.fillStyle = ACCENT
       ctx.fillText(precoStr, W / 2, priceY)
     }
 
     if (outrosSpecs.length > 0) {
       const parts: { text: string; font: string; color: string }[] = []
       outrosSpecs.forEach((s, i) => {
-        if (i > 0) parts.push({ text: "   |   ", font: F_SPECS, color: GOLD })
+        if (i > 0) parts.push({ text: "   |   ", font: F_SPECS, color: BLUE })
         parts.push({ text: s, font: F_SPECS, color: "#ffffff" })
       })
       // drawMixedLine posiciona cada pedaço manualmente a partir da borda esquerda —

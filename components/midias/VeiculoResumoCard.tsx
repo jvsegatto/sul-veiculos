@@ -71,7 +71,7 @@ export function VeiculoResumoCard({ vehicle, onAdvance }: Props) {
               <span
                 key={opt}
                 className="text-[10px] font-medium px-2 py-1 rounded-full"
-                style={{ backgroundColor: "rgba(212,175,55,0.1)", color: ACCENT, border: "1px solid rgba(212,175,55,0.2)" }}
+                style={{ backgroundColor: "rgba(29,63,214,0.1)", color: ACCENT, border: "1px solid rgba(29,63,214,0.2)" }}
               >
                 {opt}
               </span>

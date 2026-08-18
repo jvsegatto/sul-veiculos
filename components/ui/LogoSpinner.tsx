@@ -15,7 +15,7 @@ export function LogoSpinner({ fullScreen = true, size = 64 }: { fullScreen?: boo
       <div className="relative flex items-center justify-center" style={{ width: size, height: size }}>
         <motion.span
           className="absolute inset-0 rounded-full"
-          style={{ border: "2.5px solid rgba(212,175,55,0.18)", borderTopColor: "#E2231A" }}
+          style={{ border: "2.5px solid rgba(29,63,214,0.18)", borderTopColor: "#E2231A" }}
           animate={{ rotate: 360 }}
           transition={{ duration: 0.9, repeat: Infinity, ease: "linear" }}
         />

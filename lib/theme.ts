@@ -3,8 +3,8 @@
 // (ex: rebranding pra outro lojista) num lugar só.
 //
 // Alguns nomes têm mais de um alias porque o código já usava nomes
-// diferentes pro mesmo valor (ACCENT/GOLD, MUTED/TEXT2) — mantidos os dois
-// pra não precisar tocar em cada ponto de uso, só no import.
+// diferentes pro mesmo valor (MUTED/TEXT2) — mantidos os dois pra não
+// precisar tocar em cada ponto de uso, só no import.
 
 export const BG      = "#0d0d0d"
 export const SURFACE = "#1a1a1a"
@@ -18,8 +18,10 @@ export const TEXT2 = "#777777"
 export const MUTED = TEXT2
 export const TEXT3 = "#5c5c5c"
 
-export const ACCENT = "#E2231A"
-export const GOLD    = ACCENT
+export const ACCENT    = "#E2231A"
+export const ACCENT_D  = "#a8180f"
+export const BLUE      = "#1d3fd6"
+export const BLUE_DARK = "#142c9c"
 export const YELLOW  = "#ffae1f"
 
 export const DANGER       = "#a80e0e"

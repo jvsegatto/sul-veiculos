@@ -88,7 +88,7 @@ export function StoryPreview({
             className="preview-commercial font-bold uppercase tracking-[0.14em] text-[11px]"
             style={{
               backgroundColor: "#E2231A",
-              color: "#1a1206",
+              color: "#ffffff",
               padding: "5px 14px",
               borderRadius: "0 3px 3px 0",
               boxShadow: "0 3px 10px rgba(0,0,0,0.45)",
@@ -122,7 +122,7 @@ export function StoryPreview({
 
       {L.yearLine.text && (
         <DraggableLayer {...layerProps("yearLine")}>
-          <p className="preview-commercial text-[12px] font-semibold" style={{ ...TEXT_SHADOW, color: "#E4C766", whiteSpace: "nowrap" }}>
+          <p className="preview-commercial text-[12px] font-semibold" style={{ ...TEXT_SHADOW, color: "#1d3fd6", whiteSpace: "nowrap" }}>
             {L.yearLine.text}
           </p>
         </DraggableLayer>
@@ -132,7 +132,7 @@ export function StoryPreview({
         <DraggableLayer {...layerProps("priceLabel")}>
           <div style={{ maxWidth: "70vw" }}>
             <div style={{ width: "36px", height: "2px", backgroundColor: "#E2231A", marginBottom: "8px" }} />
-            <p className="preview-commercial text-[10px] font-bold uppercase tracking-[0.16em]" style={{ ...TEXT_SHADOW, color: "#E4C766", whiteSpace: "nowrap" }}>
+            <p className="preview-commercial text-[10px] font-bold uppercase tracking-[0.16em]" style={{ ...TEXT_SHADOW, color: "#1d3fd6", whiteSpace: "nowrap" }}>
               {L.priceLabel.text}
             </p>
           </div>

@@ -381,7 +381,7 @@ export function PreviewFinal({
                   <span
                     key={tag}
                     className="text-[11px] font-medium px-2.5 py-1 rounded-full"
-                    style={{ backgroundColor: "rgba(212,175,55,0.1)", color: ACCENT, border: "1px solid rgba(212,175,55,0.2)" }}
+                    style={{ backgroundColor: "rgba(29,63,214,0.1)", color: ACCENT, border: "1px solid rgba(29,63,214,0.2)" }}
                   >
                     {tag}
                   </span>
@@ -394,7 +394,7 @@ export function PreviewFinal({
         {mediaType === "story" && !saved && (
           <div
             className="flex items-center justify-between gap-3 rounded-xl px-4 py-3"
-            style={{ backgroundColor: vehicle.isNew ? "rgba(212,175,55,0.08)" : SURF2, border: `1px solid ${vehicle.isNew ? "rgba(212,175,55,0.3)" : BORDER}` }}
+            style={{ backgroundColor: vehicle.isNew ? "rgba(29,63,214,0.08)" : SURF2, border: `1px solid ${vehicle.isNew ? "rgba(29,63,214,0.3)" : BORDER}` }}
           >
             <div>
               <p className="text-[13px] font-semibold flex items-center" style={{ color: vehicle.isNew ? ACCENT : TEXT }}>

@@ -367,7 +367,7 @@ export function NovaMidiaWizard({ vehicles }: Props) {
             key={label}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[12px] font-semibold"
             style={{
-              backgroundColor: i === stepPosition ? ACCENT : i < stepPosition ? "rgba(212,175,55,0.12)" : SURF2,
+              backgroundColor: i === stepPosition ? ACCENT : i < stepPosition ? "rgba(29,63,214,0.12)" : SURF2,
               color:           i === stepPosition ? "#fff"  : i < stepPosition ? ACCENT              : MUTED,
               border:          `1px solid ${i === stepPosition ? ACCENT : BORDER}`,
             }}
@@ -391,8 +391,8 @@ export function NovaMidiaWizard({ vehicles }: Props) {
               onClick={handleToggleBatchMode}
               className="w-full flex items-center gap-3 p-3 rounded-xl text-left transition-all"
               style={{
-                backgroundColor: batchMode ? "rgba(212,175,55,0.1)" : SURF2,
-                border: `1px solid ${batchMode ? "rgba(212,175,55,0.35)" : BORDER}`,
+                backgroundColor: batchMode ? "rgba(29,63,214,0.1)" : SURF2,
+                border: `1px solid ${batchMode ? "rgba(29,63,214,0.35)" : BORDER}`,
               }}
             >
               <Package className="w-4 h-4 shrink-0" style={{ color: batchMode ? ACCENT : MUTED }} />
@@ -684,8 +684,8 @@ export function NovaMidiaWizard({ vehicles }: Props) {
                   <div
                     className="flex items-center gap-3 p-3 rounded-xl"
                     style={{
-                      backgroundColor: batchErrors === 0 ? "rgba(37,211,102,0.1)" : "rgba(212,175,55,0.1)",
-                      border: `1px solid ${batchErrors === 0 ? "rgba(37,211,102,0.3)" : "rgba(212,175,55,0.3)"}`,
+                      backgroundColor: batchErrors === 0 ? "rgba(37,211,102,0.1)" : "rgba(29,63,214,0.1)",
+                      border: `1px solid ${batchErrors === 0 ? "rgba(37,211,102,0.3)" : "rgba(29,63,214,0.3)"}`,
                     }}
                   >
                     {batchErrors === 0

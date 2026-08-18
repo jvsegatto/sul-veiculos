@@ -33,7 +33,7 @@ export function TextLayersPanel({ layers, isNew, selected, onSelect, onTextChang
       style={{ backgroundColor: SURF2, border: `1px solid ${BORDER}` }}
     >
       <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: "rgba(212,175,55,0.12)" }}>
+        <div className="w-6 h-6 rounded-lg flex items-center justify-center shrink-0" style={{ backgroundColor: "rgba(29,63,214,0.12)" }}>
           <Type className="w-3.5 h-3.5" style={{ color: ACCENT }} />
         </div>
         <div className="min-w-0">

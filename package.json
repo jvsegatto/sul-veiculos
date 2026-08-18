@@ -28,13 +28,7 @@
     "react-dom": "19.2.4",
     "server-only": "^0.0.1",
     "sharp": "^0.35.3",
-    "smartcrop-sharp": "^2.0.8",
     "zod": "^3.25.76"
-  },
-  "overrides": {
-    "smartcrop-sharp": {
-      "sharp": "$sharp"
-    }
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

@@ -61,7 +61,7 @@ export function MediaCard({ media, onDeleted, onError }: Props) {
         <div className="flex items-center justify-between gap-2">
           <span
             className="inline-flex items-center gap-1.5 text-[11px] font-bold px-2.5 py-1 rounded-lg"
-            style={{ backgroundColor: "rgba(212,175,55,0.12)", color: "#E2231A" }}
+            style={{ backgroundColor: "rgba(29,63,214,0.12)", color: "#E2231A" }}
           >
             <Icon className="w-3.5 h-3.5" />
             {tc.label}

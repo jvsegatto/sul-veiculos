@@ -37,7 +37,7 @@ export function SelecionarFotoCapa({ images, selected, onChange }: Props) {
             >
               <img src={url} alt={`Foto ${i + 1}`} className="w-full h-full object-cover" />
               {isSelected && (
-                <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: "rgba(212,175,55,0.25)" }}>
+                <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: "rgba(29,63,214,0.25)" }}>
                   <span className="w-5 h-5 rounded-full flex items-center justify-center" style={{ backgroundColor: ACCENT }}>
                     <span className="w-2 h-2 rounded-full bg-white" />
                   </span>

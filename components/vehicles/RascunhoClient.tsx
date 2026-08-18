@@ -89,7 +89,7 @@ export function RascunhoClient({ pendingAction }: Props) {
         <div className="flex items-center gap-2 flex-wrap">
           <span
             className="text-[11px] font-bold px-2.5 py-1 rounded-lg"
-            style={{ backgroundColor: "rgba(212,175,55,0.12)", color: ACCENT }}
+            style={{ backgroundColor: "rgba(29,63,214,0.12)", color: ACCENT }}
           >
             {KIND_LABEL[pendingAction.kind]}
           </span>

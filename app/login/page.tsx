@@ -62,7 +62,7 @@ export default function LoginPage() {
         >
           <Image src={STORE_LOGO_PATH} alt={STORE_NAME} width={56} height={56} className="w-14 h-14 rounded-2xl" priority />
           <div className="text-center">
-            <p className="text-[22px] font-black text-white tracking-wider">SPLENDORE</p>
+            <p className="text-[22px] font-black text-white tracking-wider">SUL VEÍCULOS</p>
             <p className="text-[12px] font-semibold tracking-[0.2em] uppercase" style={{ color: ACCENT }}>
               Estoque
             </p>
@@ -145,9 +145,9 @@ export default function LoginPage() {
               disabled={loading}
               className="w-full h-10 rounded-xl text-[13px] font-bold transition-opacity hover:opacity-90 disabled:opacity-60 flex items-center justify-center gap-2"
               style={{
-                background: 'linear-gradient(135deg, #E2231A 0%, #9c7a24 100%)',
-                boxShadow: '0 2px 12px rgba(212,175,55,0.35)',
-                color: '#1a1508',
+                background: '#1d3fd6',
+                boxShadow: '0 2px 12px rgba(29,63,214,0.35)',
+                color: '#ffffff',
               }}
             >
               {loading && (

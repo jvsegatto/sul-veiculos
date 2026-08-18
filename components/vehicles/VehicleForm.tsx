@@ -176,9 +176,9 @@ function OptionalsSelector({ selected, onChange }: { selected: string[]; onChang
               onClick={() => toggle(opt)}
               className="text-[11px] font-semibold px-3 py-1.5 rounded-full transition-all"
               style={{
-                backgroundColor: active ? "rgba(212,175,55,0.2)" : "rgba(255,255,255,0.04)",
+                backgroundColor: active ? "rgba(29,63,214,0.2)" : "rgba(255,255,255,0.04)",
                 color:           active ? ACCENT : MUTED,
-                border:          `1px solid ${active ? "rgba(212,175,55,0.4)" : BORDER}`,
+                border:          `1px solid ${active ? "rgba(29,63,214,0.4)" : BORDER}`,
               }}
             >
               {opt}
@@ -421,7 +421,7 @@ export function VehicleForm({
           size="sm"
           isPending={loading}
           className="font-semibold px-5"
-          style={{ boxShadow: "0 2px 12px rgba(212,175,55,0.35)" }}
+          style={{ boxShadow: "0 2px 12px rgba(29,63,214,0.35)" }}
         >
           {submitLabel}
         </Button>

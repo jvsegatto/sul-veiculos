@@ -163,7 +163,7 @@ export function PastaVeiculoClient({ folder, vehicle, media }: Props) {
           <Link
             href="/midias/nova"
             className="inline-flex items-center gap-2 text-[13px] font-semibold px-4 rounded-xl mt-2"
-            style={{ height: "36px", background: "linear-gradient(135deg, #E2231A 0%, #9c7a24 100%)", color: "#1a1508" }}
+            style={{ height: "36px", background: "#1d3fd6", color: "#ffffff" }}
           >
             Gerar mídia
           </Link>
@@ -378,7 +378,7 @@ function MediaDetailCard({ media, vehicle, deleting, onDelete, onToast }: {
       <div className="flex items-center justify-between">
         <span
           className="text-[11px] font-bold px-2.5 py-1 rounded-lg"
-          style={{ backgroundColor: "rgba(212,175,55,0.12)", color: ACCENT }}
+          style={{ backgroundColor: "rgba(29,63,214,0.12)", color: ACCENT }}
         >
           {MEDIA_TYPE_CFG[media.mediaType].label}
         </span>

@@ -195,7 +195,7 @@ export function VehicleCard({ vehicle, onSold, onRestore, onFeatureToggle }: Pro
             {vehicle.category && (
               <span
                 className="text-[9px] font-bold px-1.5 py-0.5 rounded"
-                style={{ backgroundColor: "rgba(212,175,55,0.15)", color: ACCENT }}
+                style={{ backgroundColor: "rgba(29,63,214,0.15)", color: ACCENT }}
               >
                 {vehicle.category}
               </span>

@@ -52,7 +52,7 @@ export function SelecionarFotosCollage({ images, selected, onChange }: Props) {
                 >
                   <img src={url} alt={`Foto ${j + 1}`} className="w-full h-full object-cover" />
                   {isSelected && (
-                    <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: "rgba(212,175,55,0.25)" }}>
+                    <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: "rgba(29,63,214,0.25)" }}>
                       <span className="text-white text-[10px] font-bold rounded-full px-1.5 py-0.5" style={{ backgroundColor: ACCENT }}>
                         {i + 1}
                       </span>

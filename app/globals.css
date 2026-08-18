@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&display=swap');
 @import "tailwindcss";
 @import "@heroui/styles";
 
@@ -71,10 +71,10 @@
 }
 
 /* Tipografia de marca usada dentro dos previews (story/post/carrossel) — mesmas
-   fontes do site principal (identidade real da Splendore, não de outro projeto):
-   Cinzel serifado nos destaques, Inter no corpo. */
+   fontes do site institucional da Sul Veículos: Oswald condensada nos
+   destaques, Inter no corpo. */
 .preview-display {
-  font-family: 'Cinzel', 'Times New Roman', serif;
+  font-family: 'Oswald', 'Arial Narrow', sans-serif;
   letter-spacing: 0.3px;
 }
 .preview-commercial {

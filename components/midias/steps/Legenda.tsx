@@ -36,7 +36,7 @@ export function Legenda({ caption, hashtags, onChange }: Props) {
             <span
               key={tag}
               className="text-[11px] font-medium px-2.5 py-1 rounded-full"
-              style={{ backgroundColor: "rgba(212,175,55,0.1)", color: ACCENT, border: "1px solid rgba(212,175,55,0.2)" }}
+              style={{ backgroundColor: "rgba(29,63,214,0.1)", color: ACCENT, border: "1px solid rgba(29,63,214,0.2)" }}
             >
               {tag}
             </span>

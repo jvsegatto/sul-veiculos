@@ -76,7 +76,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <Link href="/estoque" className="flex items-center gap-3 shrink-0">
           <Image src={STORE_LOGO_PATH} alt={STORE_NAME} width={36} height={36} className="w-9 h-9" priority />
           <div className="leading-none">
-            <p className="text-[15px] font-black text-white tracking-wider">SPLENDORE</p>
+            <p className="text-[15px] font-black text-white tracking-wider">SUL VEÍCULOS</p>
             <p className="text-[10px] font-semibold tracking-[0.2em] uppercase" style={{ color: "#E2231A", marginTop: "3px" }}>
               Estoque
             </p>
@@ -118,7 +118,7 @@ export function Shell({ children }: { children: ReactNode }) {
           type="button"
           onClick={() => setMobileMenuOpen((v) => !v)}
           className="sm:hidden inline-flex items-center justify-center w-9 h-9 rounded-xl shrink-0 transition-colors"
-          style={{ backgroundColor: mobileMenuOpen ? "rgba(212,175,55,0.15)" : "rgba(255,255,255,0.06)", color: mobileMenuOpen ? "#E2231A" : "#fff" }}
+          style={{ backgroundColor: mobileMenuOpen ? "rgba(29,63,214,0.15)" : "rgba(255,255,255,0.06)", color: mobileMenuOpen ? "#E2231A" : "#fff" }}
           aria-label={mobileMenuOpen ? "Fechar menu" : "Abrir menu"}
         >
           {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
@@ -139,8 +139,8 @@ export function Shell({ children }: { children: ReactNode }) {
         <div
           className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
           style={{
-            background:  "linear-gradient(135deg, #E2231A, #9c7a24)",
-            boxShadow:   "0 0 0 2px rgba(212,175,55,0.25)",
+            background:  "#1d3fd6",
+            boxShadow:   "0 0 0 2px rgba(29,63,214,0.25)",
           }}
           title={userName ?? undefined}
         >
