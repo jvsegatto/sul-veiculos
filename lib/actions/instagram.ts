@@ -1,6 +1,10 @@
 'use server'
 
-const GRAPH_BASE = 'https://graph.instagram.com/v21.0'
+// graph.facebook.com (não graph.instagram.com) -- o token usado aqui vem do
+// fluxo classico de Login do Facebook (Pagina + conta comercial do Instagram
+// vinculada), nao do fluxo mais novo "Instagram API with Instagram Login".
+// graph.instagram.com so aceita token gerado por esse segundo fluxo.
+const GRAPH_BASE = 'https://graph.facebook.com/v21.0'
 
 function getCredentials() {
   const token = process.env.META_PAGE_ACCESS_TOKEN
