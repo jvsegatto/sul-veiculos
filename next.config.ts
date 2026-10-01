@@ -15,6 +15,22 @@ const nextConfig: NextConfig = {
   // fora do basePath; os endpoints reais (/admin/oauth/*, /admin/api/mcp)
   // continuam normalmente, já que são usados como URL absoluta, não
   // reconstruídos pelo cliente.
+  // Vale também pro domínio direto (sul-veiculos.vercel.app), que não passa
+  // pelos headers do vercel.json do site. Bloqueia o painel (incluindo a tela
+  // de autorizar conector) de ser embutido em iframe de outro site.
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "Content-Security-Policy", value: "frame-ancestors 'none'" },
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+        ],
+      },
+    ];
+  },
   async rewrites() {
     // Next exige destino absoluto (http/https) quando a origem do rewrite
     // tem basePath:false — vira um proxy interno pro próprio app, mas é o

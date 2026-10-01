@@ -1,4 +1,4 @@
-import type { UserInfo } from '@/lib/actions/vehicles'
+import type { UserInfo } from '@/lib/server/vehicles-core'
 
 type ExtraWithAuth = { authInfo?: { extra?: Record<string, unknown> } }
 

@@ -1,3 +1,5 @@
+import 'server-only'
+
 import { createClient as createSupabaseClient } from '@supabase/supabase-js'
 
 // Bypassa RLS — só usar depois de checar permissão no código (getUserInfo()).

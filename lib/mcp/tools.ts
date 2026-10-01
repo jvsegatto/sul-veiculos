@@ -1,18 +1,22 @@
 import { z } from 'zod'
 import type { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js'
 import type { CallToolResult } from '@modelcontextprotocol/sdk/types.js'
+// Núcleo sem checagem de permissão (não as server actions de lib/actions/*,
+// que exigem sessão de cookie): a identidade aqui vem do token Bearer,
+// validado por withMcpAuth antes de qualquer tool rodar.
 import {
-  getVehicles,
-  getVehicleById,
-  createVehicle,
-  updateVehicleAction,
-  archiveVehicle,
-  markAsSold,
-  markAsAvailable,
+  listVehicles,
+  findVehicleById,
+  insertVehicle,
+  patchVehicle,
+  archiveVehicleRow,
+  setVehicleSold,
+  setVehicleAvailable,
   type VehicleFormInput,
-} from '@/lib/actions/vehicles'
+} from '@/lib/server/vehicles-core'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { gerarLegenda, gerarHashtags, formatPrecoSemCentavos } from '@/lib/midias/legenda'
-import { postToInstagram } from '@/lib/actions/instagram'
+import { publishToInstagram } from '@/lib/server/instagram-core'
 import { createPendingAction, getPendingActionAdmin, markPendingActionStatus, logMcpAction } from '@/lib/mcp/store'
 import { resolveMcpUser } from '@/lib/mcp/auth'
 import type { Vehicle } from '@/lib/types'
@@ -66,7 +70,7 @@ export function registerMcpTools(server: McpServer) {
     },
     async (args, extra) => {
       const user = resolveMcpUser(extra)
-      const { vehicles } = await getVehicles({ admin: true })
+      const vehicles = await listVehicles(createAdminClient())
       let filtered = vehicles
 
       if (args.busca) {
@@ -95,13 +99,13 @@ export function registerMcpTools(server: McpServer) {
     async (args, extra) => {
       const user = resolveMcpUser(extra)
       if (args.id) {
-        const { vehicle } = await getVehicleById(args.id, { admin: true })
+        const vehicle = await findVehicleById(createAdminClient(), args.id)
         await logMcpAction({ userId: user.userId, userName: user.name, tool: 'estoque_buscar_veiculo', vehicleId: args.id, params: args, result: vehicle ? 'success' : 'error' })
         if (!vehicle) return fail('Veículo não encontrado')
         return ok(vehicleSummary(vehicle))
       }
 
-      const { vehicles } = await getVehicles({ admin: true })
+      const vehicles = await listVehicles(createAdminClient())
       const termo = (args.termo ?? '').toLowerCase()
       const encontrados = vehicles.filter((v) =>
         [v.name, v.brand, v.model, String(v.year)].some((f) => f?.toString().toLowerCase().includes(termo))
@@ -178,7 +182,7 @@ export function registerMcpTools(server: McpServer) {
       }
 
       const input = { ...(pendingAction.payload as unknown as VehicleFormInput), images, imageUrl: images[0] }
-      const { vehicle, error } = await createVehicle(input, { userInfo: user })
+      const { vehicle, error } = await insertVehicle(createAdminClient(), input)
 
       await markPendingActionStatus(pendingActionId, error ? 'pending' : 'confirmed')
       await logMcpAction({
@@ -207,7 +211,7 @@ export function registerMcpTools(server: McpServer) {
     },
     async (args, extra) => {
       const { vehicleId, ...patch } = args
-      const { vehicle } = await getVehicleById(vehicleId, { admin: true })
+      const vehicle = await findVehicleById(createAdminClient(), vehicleId)
       if (!vehicle) return fail('Veículo não encontrado')
 
       const fields = Object.entries(patch).filter(([, v]) => v !== undefined)
@@ -236,7 +240,7 @@ export function registerMcpTools(server: McpServer) {
       if (!pendingAction || pendingAction.kind !== 'editar' || !pendingAction.vehicleId) return fail('Rascunho não encontrado')
       if (pendingAction.status !== 'pending') return fail(`Esse rascunho já está "${pendingAction.status}"`)
 
-      const { vehicle, error } = await updateVehicleAction(pendingAction.vehicleId, pendingAction.payload, { userInfo: user })
+      const { vehicle, error } = await patchVehicle(createAdminClient(), pendingAction.vehicleId, pendingAction.payload)
 
       await markPendingActionStatus(pendingActionId, error ? 'pending' : 'confirmed')
       await logMcpAction({
@@ -256,7 +260,7 @@ export function registerMcpTools(server: McpServer) {
     'Propõe arquivar (remover das listagens) um veículo. É reversível — nunca apaga de verdade.',
     { vehicleId: z.string() },
     async ({ vehicleId }, extra) => {
-      const { vehicle } = await getVehicleById(vehicleId, { admin: true })
+      const vehicle = await findVehicleById(createAdminClient(), vehicleId)
       if (!vehicle) return fail('Veículo não encontrado')
 
       const user = resolveMcpUser(extra)
@@ -279,7 +283,7 @@ export function registerMcpTools(server: McpServer) {
       if (!pendingAction || pendingAction.kind !== 'remover' || !pendingAction.vehicleId) return fail('Rascunho não encontrado')
       if (pendingAction.status !== 'pending') return fail(`Esse rascunho já está "${pendingAction.status}"`)
 
-      const { error } = await archiveVehicle(pendingAction.vehicleId, { userInfo: user })
+      const { error } = await archiveVehicleRow(pendingAction.vehicleId)
 
       await markPendingActionStatus(pendingActionId, error ? 'pending' : 'confirmed')
       await logMcpAction({
@@ -300,10 +304,10 @@ export function registerMcpTools(server: McpServer) {
     { vehicleId: z.string() },
     async ({ vehicleId }, extra) => {
       const user = resolveMcpUser(extra)
-      const { vehicle } = await getVehicleById(vehicleId, { admin: true })
+      const vehicle = await findVehicleById(createAdminClient(), vehicleId)
       if (!vehicle) return fail('Veículo não encontrado')
 
-      const { error } = await markAsSold(vehicleId, { userInfo: user })
+      const { error } = await setVehicleSold(vehicleId)
       await logMcpAction({ userId: user.userId, userName: user.name, tool: 'estoque_marcar_vendido', vehicleId, params: {}, result: error ? 'error' : 'success', errorMessage: error })
 
       if (error) return fail(error)
@@ -317,10 +321,10 @@ export function registerMcpTools(server: McpServer) {
     { vehicleId: z.string() },
     async ({ vehicleId }, extra) => {
       const user = resolveMcpUser(extra)
-      const { vehicle } = await getVehicleById(vehicleId, { admin: true })
+      const vehicle = await findVehicleById(createAdminClient(), vehicleId)
       if (!vehicle) return fail('Veículo não encontrado')
 
-      const { error } = await markAsAvailable(vehicleId, { userInfo: user })
+      const { error } = await setVehicleAvailable(vehicleId)
       await logMcpAction({ userId: user.userId, userName: user.name, tool: 'estoque_marcar_disponivel', vehicleId, params: {}, result: error ? 'error' : 'success', errorMessage: error })
 
       if (error) return fail(error)
@@ -334,10 +338,10 @@ export function registerMcpTools(server: McpServer) {
     { vehicleId: z.string(), destaque: z.boolean() },
     async ({ vehicleId, destaque }, extra) => {
       const user = resolveMcpUser(extra)
-      const { vehicle } = await getVehicleById(vehicleId, { admin: true })
+      const vehicle = await findVehicleById(createAdminClient(), vehicleId)
       if (!vehicle) return fail('Veículo não encontrado')
 
-      const { error } = await updateVehicleAction(vehicleId, { isPremium: destaque }, { userInfo: user })
+      const { error } = await patchVehicle(createAdminClient(), vehicleId, { isPremium: destaque })
       await logMcpAction({ userId: user.userId, userName: user.name, tool: 'estoque_definir_destaque', vehicleId, params: { destaque }, result: error ? 'error' : 'success', errorMessage: error })
 
       if (error) return fail(error)
@@ -353,7 +357,7 @@ export function registerMcpTools(server: McpServer) {
     { vehicleId: z.string() },
     async ({ vehicleId }, extra) => {
       const user = resolveMcpUser(extra)
-      const { vehicle } = await getVehicleById(vehicleId, { admin: true })
+      const vehicle = await findVehicleById(createAdminClient(), vehicleId)
       if (!vehicle) return fail('Veículo não encontrado')
       if (!vehicle.images?.length) return fail(`${vehicleLabel(vehicle)} não tem fotos cadastradas — suba fotos pelo painel antes.`)
 
@@ -375,7 +379,7 @@ export function registerMcpTools(server: McpServer) {
     { vehicleId: z.string(), caption: z.string().optional() },
     async ({ vehicleId, caption }, extra) => {
       const user = resolveMcpUser(extra)
-      const { vehicle } = await getVehicleById(vehicleId, { admin: true })
+      const vehicle = await findVehicleById(createAdminClient(), vehicleId)
       if (!vehicle) return fail('Veículo não encontrado')
       if (!vehicle.images?.length) return fail(`${vehicleLabel(vehicle)} não tem fotos cadastradas.`)
 
@@ -403,7 +407,7 @@ export function registerMcpTools(server: McpServer) {
 
       const images = (pendingAction.payload.images as string[]) ?? []
       const caption = (pendingAction.payload.caption as string) ?? ''
-      const result = await postToInstagram({ images, caption, mediaType: 'carousel' })
+      const result = await publishToInstagram({ images, caption, mediaType: 'carousel' })
 
       await markPendingActionStatus(pendingActionId, result.error ? 'pending' : 'confirmed')
       await logMcpAction({

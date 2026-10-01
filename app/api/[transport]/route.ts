@@ -14,7 +14,9 @@ const baseHandler = createMcpHandler(
   {
     basePath: "/api",
     maxDuration: 60,
-    verboseLogs: true,
+    // Desligado: com true, o payload de cada chamada (dados de veículo,
+    // legendas, ids) ia parar nos logs da Vercel.
+    verboseLogs: false,
     disableSse: true,
   }
 )

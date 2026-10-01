@@ -3,7 +3,7 @@
 import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { revalidatePath } from 'next/cache'
-import { getVehicleById, getUserInfo, type UserInfo } from '@/lib/actions/vehicles'
+import { getVehicleById, getUserInfo } from '@/lib/actions/vehicles'
 import type {
   GeneratedMedia,
   GeneratedMediaWithRelations,
@@ -166,11 +166,8 @@ export async function getFolderWithMedia(folderId: string): Promise<{
 // montado no navegador na hora do download), então não sobra lixo pra limpar
 // além dessa linha. Usa o admin client (bypassa RLS) igual às outras mutações
 // privilegiadas em vehicles.ts, já que não existe policy de DELETE.
-export async function deleteGeneratedMedia(
-  id: string,
-  opts: { userInfo?: UserInfo } = {}
-): Promise<{ error: string | null }> {
-  const userInfo = opts.userInfo ?? await getUserInfo()
+export async function deleteGeneratedMedia(id: string): Promise<{ error: string | null }> {
+  const userInfo = await getUserInfo()
   if (!userInfo || userInfo.role === 'VENDEDOR') return { error: 'Sem permissão' }
 
   const supabase = createAdminClient()

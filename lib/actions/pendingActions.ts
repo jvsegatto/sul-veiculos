@@ -18,6 +18,25 @@ function rowToPendingAction(row: Record<string, unknown>): MCPPendingAction {
   }
 }
 
+const MAX_DRAFT_PHOTOS = 40
+
+// Rascunho só aceita foto se for de cadastro novo, ainda pendente e dentro do
+// prazo (expires_at, 24h por padrão) — o link vale como senha, então não pode
+// servir pra sempre nem pra rascunho de edição/publicação.
+function draftBlockReason(row: { kind?: unknown; status?: unknown; expires_at?: unknown }): string | null {
+  if (row.kind !== 'criar') return 'Rascunho não encontrado'
+  if (row.status !== 'pending') return 'Esse rascunho não está mais pendente de confirmação'
+  if (typeof row.expires_at === 'string' && new Date(row.expires_at) < new Date()) {
+    return 'Esse link de fotos expirou. Peça um novo rascunho ao Claude.'
+  }
+  return null
+}
+
+function isOwnPhotoUrl(url: unknown): boolean {
+  const base = process.env.R2_PUBLIC_BASE_URL?.replace(/\/$/, '')
+  return typeof url === 'string' && !!base && url.startsWith(`${base}/`)
+}
+
 // Usado pela página /estoque/rascunhos/[id] — de propósito SEM exigir login:
 // o ID do rascunho (uuid v4, 122 bits) já funciona como capability link —
 // só quem recebeu o link exato do Claude consegue acessar. Por isso usa o
@@ -43,15 +62,24 @@ export async function setDraftImages(
   images: string[],
   thumbnails: string[]
 ): Promise<{ error: string | null }> {
+  if (!Array.isArray(images) || !Array.isArray(thumbnails)) return { error: 'Lista de fotos inválida' }
+  if (images.length > MAX_DRAFT_PHOTOS || thumbnails.length > MAX_DRAFT_PHOTOS) {
+    return { error: `Máximo de ${MAX_DRAFT_PHOTOS} fotos por veículo` }
+  }
+  if (!images.every(isOwnPhotoUrl) || !thumbnails.every(isOwnPhotoUrl)) {
+    return { error: 'Foto fora do armazenamento da loja' }
+  }
+
   const supabase = createAdminClient()
   const { data: existing, error: fetchError } = await supabase
     .from('mcp_pending_actions')
-    .select('payload, status')
+    .select('payload, status, kind, expires_at')
     .eq('id', id)
     .single()
 
-  if (fetchError || !existing) return { error: fetchError?.message ?? 'Rascunho não encontrado' }
-  if (existing.status !== 'pending') return { error: 'Esse rascunho não está mais pendente de confirmação' }
+  if (fetchError || !existing) return { error: 'Rascunho não encontrado' }
+  const blocked = draftBlockReason(existing)
+  if (blocked) return { error: blocked }
 
   const payload = (existing.payload as Record<string, unknown>) ?? {}
   const { error } = await supabase
@@ -78,14 +106,13 @@ export async function uploadDraftPhoto(
     const supabase = createAdminClient()
     const { data: existing, error: fetchError } = await supabase
       .from('mcp_pending_actions')
-      .select('status')
+      .select('status, kind, expires_at')
       .eq('id', pendingActionId)
       .single()
 
     if (fetchError || !existing) return { fullUrl: null, thumbUrl: null, error: 'Rascunho não encontrado' }
-    if (existing.status !== 'pending') {
-      return { fullUrl: null, thumbUrl: null, error: 'Esse rascunho não está mais pendente de confirmação' }
-    }
+    const blocked = draftBlockReason(existing)
+    if (blocked) return { fullUrl: null, thumbUrl: null, error: blocked }
 
     const buffer = Buffer.from(await file.arrayBuffer())
     const baseName = `${Date.now()}_${Math.random().toString(36).slice(2)}`

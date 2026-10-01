@@ -20,6 +20,13 @@ export async function approveAuthorization(formData: FormData) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  // Mesma regra da página de consentimento: action é endpoint POST próprio,
+  // então revalida aqui em vez de confiar que só a página chama.
+  const { data: profile } = await supabase.from('profiles').select('role, active').eq('id', user.id).single()
+  if (!profile || !profile.active || profile.role === 'VENDEDOR') {
+    throw new Error('Sua conta não tem permissão pra autorizar esse conector')
+  }
+
   const client = await getOAuthClient(clientId)
   if (!client || !client.redirectUris.includes(redirectUri)) {
     throw new Error('Cliente OAuth inválido ou redirect_uri não autorizado')
@@ -37,8 +44,14 @@ export async function approveAuthorization(formData: FormData) {
 }
 
 export async function denyAuthorization(formData: FormData) {
+  const clientId    = str(formData, 'client_id')
   const redirectUri = str(formData, 'redirect_uri')
   const state         = formData.get('state')
+
+  // Sem isso, qualquer redirect_uri virava redirecionamento aberto a partir
+  // do domínio do painel (usável em phishing).
+  const client = await getOAuthClient(clientId)
+  if (!client || !client.redirectUris.includes(redirectUri)) redirect('/estoque')
 
   const url = new URL(redirectUri)
   url.searchParams.set('error', 'access_denied')
