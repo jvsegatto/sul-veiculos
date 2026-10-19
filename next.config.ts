@@ -2,6 +2,16 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   basePath: "/admin",
+  // sharp 0.35 trocou a entrada sharp/lib/index.js por sharp/dist/index.cjs, e
+  // o rastreador de arquivos do Next (nft) só inclui os binários nativos
+  // (@img/sharp-<plataforma> + @img/sharp-libvips-<plataforma>) quando acha o
+  // caminho antigo. Sem isso a função sobe pra Vercel sem a libvips e as rotas
+  // que importam lib/uploads/r2.ts quebram ao carregar (HTTP 500 no upload).
+  // As chaves casam por "contém" com a rota (ex.: /estoque/rascunhos/[id]).
+  outputFileTracingIncludes: {
+    "/api/upload": ["./node_modules/@img/**/*"],
+    "/estoque/rascunhos": ["./node_modules/@img/**/*"],
+  },
   experimental: {
     serverActions: {
       bodySizeLimit: "10mb",
